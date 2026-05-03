@@ -109,3 +109,25 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+
+body.dark {
+  background: #141418;
+  color: #f5f0e8;
+}
+
+body.light {
+  background: #f4eddf;
+  color: #1d1815;
+}
+
+.navbar {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  padding: 18px;
+  border-bottom: 1px solid #8a745f;
+}
+
+button {
+  cursor: pointer;
+}
