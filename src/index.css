@@ -238,7 +238,16 @@ h1 {
 }
 
 .danger {
-  background: var(--burgundy);
+  background: transparent;
+  color: #ff6b6b;
+  border: 1px solid rgba(255, 107, 107, 0.3);
+  padding: 6px 10px;
+  font-size: 13px;
+  border-radius: 10px;
+}
+
+.danger:hover {
+  background: rgba(255, 107, 107, 0.1);
 }
 
 .total-box {
@@ -317,4 +326,21 @@ body.dark .order-form input {
 body.dark .quantity-input {
   background: rgba(255, 255, 255, 0.08);
   color: #fff;
+}
+
+.cart-quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.cart-quantity-controls button {
+  width: 34px;
+  height: 34px;
+  padding: 0;
+}
+
+.cart-item button.danger {
+  align-self: center;
 }

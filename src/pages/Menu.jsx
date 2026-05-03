@@ -37,6 +37,19 @@ export default function Menu() {
     localStorage.setItem("cart", JSON.stringify(updatedCart));
   };
 
+  const updateCartQuantity = (id, change) => {
+    const updatedCart = cart
+      .map((item) =>
+        item.id === id
+          ? { ...item, quantity: item.quantity + change }
+          : item
+      )
+      .filter((item) => item.quantity > 0);
+
+    setCart(updatedCart);
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+  };
+
   const removeFromCart = (id) => {
     const updatedCart = cart.filter((item) => item.id !== id);
     setCart(updatedCart);
@@ -121,9 +134,13 @@ export default function Menu() {
                   <div className="cart-item" key={item.id}>
                     <div>
                       <strong>{item.name}</strong>
-                      <span>
-                        {item.quantity} x {item.price} MDL
-                      </span>
+                      <span>{item.quantity} x {item.price} MDL</span>
+
+                      <div className="cart-quantity-controls">
+                        <button onClick={() => updateCartQuantity(item.id, -1)}>-</button>
+                        <strong>{item.quantity}</strong>
+                        <button onClick={() => updateCartQuantity(item.id, 1)}>+</button>
+                      </div>
                     </div>
 
                     <button
