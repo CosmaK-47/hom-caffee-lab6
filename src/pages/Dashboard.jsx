@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 
 export default function Dashboard() {
   const [orders, setOrders] = useState([]);
+  const [filter, setFilter] = useState("all");
 
   useEffect(() => {
     const savedOrders = JSON.parse(localStorage.getItem("orders")) || [];
@@ -17,28 +18,68 @@ export default function Dashboard() {
     localStorage.setItem("orders", JSON.stringify(updatedOrders));
   };
 
-  const clearOrders = () => {
-    localStorage.removeItem("orders");
-    setOrders([]);
-  };
+  const filteredOrders =
+    filter === "all"
+      ? orders
+      : orders.filter((order) => order.status === filter);
 
-  const totalRevenue = orders.reduce((sum, order) => sum + order.total, 0);
+  const totalRevenue = filteredOrders.reduce(
+    (sum, order) => sum + order.total,
+    0
+  );
+
+  // 🔥 STATISTICS
+  const productStats = {};
+
+  orders.forEach((order) => {
+    order.items.forEach((item) => {
+      if (!productStats[item.name]) {
+        productStats[item.name] = 0;
+      }
+      productStats[item.name] += item.quantity;
+    });
+  });
+
+  const mostOrdered = Object.entries(productStats).sort(
+    (a, b) => b[1] - a[1]
+  )[0];
+
+  const totalProductsSold = Object.values(productStats).reduce(
+    (sum, val) => sum + val,
+    0
+  );
 
   return (
     <div>
       <h1>Admin Dashboard</h1>
 
-      <h2>Total Orders: {orders.length}</h2>
+      <h2>Total Orders: {filteredOrders.length}</h2>
       <h2>Total Revenue: {totalRevenue} MDL</h2>
+      <h2>Total Products Sold: {totalProductsSold}</h2>
 
-      <button onClick={clearOrders}>Clear Orders</button>
+      {mostOrdered && (
+        <h2>
+          Most Ordered Product: {mostOrdered[0]} ({mostOrdered[1]} pcs)
+        </h2>
+      )}
 
       <hr />
 
-      {orders.length === 0 ? (
-        <p>No orders yet.</p>
+      {/* 🔥 FILTER */}
+      <div>
+        <button onClick={() => setFilter("all")}>All</button>
+        <button onClick={() => setFilter("new")}>New</button>
+        <button onClick={() => setFilter("preparing")}>Preparing</button>
+        <button onClick={() => setFilter("done")}>Done</button>
+        <button onClick={() => setFilter("cancelled")}>Cancelled</button>
+      </div>
+
+      <hr />
+
+      {filteredOrders.length === 0 ? (
+        <p>No orders found.</p>
       ) : (
-        orders.map((order) => (
+        filteredOrders.map((order) => (
           <div key={order.id} style={{ border: "1px solid gray", margin: "10px", padding: "10px" }}>
             <h3>Order ID: {order.id}</h3>
 
@@ -58,6 +99,7 @@ export default function Dashboard() {
                 <option value="new">New</option>
                 <option value="preparing">Preparing</option>
                 <option value="done">Done</option>
+                <option value="cancelled">Cancelled</option>
               </select>
             </p>
 
