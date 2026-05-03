@@ -21,16 +21,17 @@ export default function Menu() {
 
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
-  const addToCart = (product) => {
+  const addToCart = (product, quantity = 1) => {
+    const safeQuantity = Math.max(1, Number(quantity) || 1);
     const existing = cart.find((item) => item.id === product.id);
 
     const updatedCart = existing
       ? cart.map((item) =>
         item.id === product.id
-          ? { ...item, quantity: item.quantity + 1 }
+          ? { ...item, quantity: item.quantity + safeQuantity }
           : item
       )
-      : [...cart, { ...product, quantity: 1 }];
+      : [...cart, { ...product, quantity: safeQuantity }];
 
     setCart(updatedCart);
     localStorage.setItem("cart", JSON.stringify(updatedCart));

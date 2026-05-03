@@ -295,3 +295,26 @@ body.dark .order-form input {
     flex-wrap: wrap;
   }
 }
+
+.product-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.quantity-input {
+  width: 74px;
+  padding: 10px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--brown-dark);
+  font-weight: 800;
+  text-align: center;
+}
+
+body.dark .quantity-input {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
