@@ -1,16 +1,69 @@
-# React + Vite
+# HOM Caffee Catering App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Description
+This is a client-side React web application developed for Lab 6.
+The app allows users to browse menu items, add products to a catering cart, and submit event requests.
+An admin dashboard is provided to manage orders and view statistics.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Features
 
-## React Compiler
+### Menu
+- View café products
+- Filter by category (sarat, dulce, cafea, etc.)
+- Like/favorite products (saved in localStorage)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Cart (Catering)
+- Add/remove products
+- Quantity management
+- Automatic total calculation
 
-## Expanding the ESLint configuration
+### Catering Request
+- Submit event request with:
+  - name
+  - phone
+  - location
+  - date
+- Orders stored in localStorage
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Admin Dashboard
+- View all orders
+- Change order status (new, preparing, done, cancelled)
+- Filter orders by status
+- View statistics:
+  - total orders
+  - total revenue
+  - total products sold
+  - most ordered product
+
+### Theme
+- Light/Dark mode
+- Saved in localStorage
+
+---
+
+## Technologies
+- React (Vite)
+- JavaScript
+- localStorage
+
+---
+
+## App Flow
+
+1. User browses menu
+2. Adds products to cart
+3. Submits catering request
+4. Data is stored in localStorage
+5. Admin views orders in dashboard
+
+---
+
+## Live Demo
+(you will add this after deployment)
+
+---
+
+## Repository
+https://github.com/CosmaK-47/hom-caffee-lab6
