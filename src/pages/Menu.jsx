@@ -40,9 +40,7 @@ export default function Menu() {
   const updateCartQuantity = (id, change) => {
     const updatedCart = cart
       .map((item) =>
-        item.id === id
-          ? { ...item, quantity: item.quantity + change }
-          : item
+        item.id === id ? { ...item, quantity: item.quantity + change } : item
       )
       .filter((item) => item.quantity > 0);
 
@@ -56,7 +54,7 @@ export default function Menu() {
     localStorage.setItem("cart", JSON.stringify(updatedCart));
   };
 
-  const handleSubmitOrder = (e) => {
+  const handleSubmitOrder = async (e) => {
     e.preventDefault();
 
     if (cart.length === 0) {
@@ -64,24 +62,41 @@ export default function Menu() {
       return;
     }
 
-    const savedOrders = JSON.parse(localStorage.getItem("orders")) || [];
-
     const newOrder = {
-      id: Date.now(),
       customer,
       items: cart,
       total,
-      status: "new",
-      createdAt: new Date().toLocaleString(),
     };
 
-    localStorage.setItem("orders", JSON.stringify([...savedOrders, newOrder]));
-    localStorage.removeItem("cart");
+    try {
+      const response = await fetch("http://localhost:5000/api/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newOrder),
+      });
 
-    setCart([]);
-    setCustomer({ name: "", phone: "", location: "", date: "" });
+      if (!response.ok) {
+        alert("Failed to submit catering request.");
+        return;
+      }
 
-    alert("Catering request submitted successfully!");
+      localStorage.removeItem("cart");
+
+      setCart([]);
+      setCustomer({
+        name: "",
+        phone: "",
+        location: "",
+        date: "",
+      });
+
+      alert("Catering request submitted successfully!");
+    } catch (error) {
+      console.error(error);
+      alert("Backend connection error.");
+    }
   };
 
   return (
@@ -134,12 +149,18 @@ export default function Menu() {
                   <div className="cart-item" key={item.id}>
                     <div>
                       <strong>{item.name}</strong>
-                      <span>{item.quantity} x {item.price} MDL</span>
+                      <span>
+                        {item.quantity} x {item.price} MDL
+                      </span>
 
                       <div className="cart-quantity-controls">
-                        <button onClick={() => updateCartQuantity(item.id, -1)}>-</button>
+                        <button onClick={() => updateCartQuantity(item.id, -1)}>
+                          -
+                        </button>
                         <strong>{item.quantity}</strong>
-                        <button onClick={() => updateCartQuantity(item.id, 1)}>+</button>
+                        <button onClick={() => updateCartQuantity(item.id, 1)}>
+                          +
+                        </button>
                       </div>
                     </div>
 

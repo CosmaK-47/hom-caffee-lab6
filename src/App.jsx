@@ -4,7 +4,6 @@ import Dashboard from "./pages/Dashboard";
 
 function App() {
   const [page, setPage] = useState("menu");
-  const ADMIN_PIN = "8885553535";
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem("theme") || "dark";
   });
@@ -18,13 +17,33 @@ function App() {
     setTheme(theme === "dark" ? "light" : "dark");
   };
 
-  const openDashboard = () => {
+  const openDashboard = async () => {
     const pin = prompt("Enter admin PIN:");
 
-    if (pin === ADMIN_PIN) {
+    try {
+      const response = await fetch("http://localhost:5000/token", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          password: pin,
+          role: "ADMIN",
+        }),
+      });
+
+      if (!response.ok) {
+        alert("Wrong PIN");
+        return;
+      }
+
+      const data = await response.json();
+
+      localStorage.setItem("token", data.token);
       setPage("dashboard");
-    } else {
-      alert("Wrong PIN");
+    } catch (error) {
+      console.error(error);
+      alert("Backend is not running or token request failed");
     }
   };
 
